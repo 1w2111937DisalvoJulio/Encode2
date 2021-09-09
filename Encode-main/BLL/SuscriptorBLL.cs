@@ -4,26 +4,35 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL;
+using Entidades;
 
 namespace BLL
 {
-    class SuscriptorBLL
+    public class SuscriptorBLL
     {
-        private SuscriptorBLL nuevo = new SuscriptorBLL();
-        public DataTable Mostrar()
+        public SuscriptorDAL nuevo = new SuscriptorDAL();
+        //public DataTable Buscar()
+        //{
+        //    DataTable tabla = new DataTable();
+        //    tabla = nuevo.Buscar();
+        //    return tabla;
+        //}
+
+        public bool Insertar(Suscriptor suscriptor)
         {
-            DataTable tabla = new DataTable();
-            tabla = nuevo.Mostrar();
-            return tabla;
+            return nuevo.InsertarSuscriptor(suscriptor);
         }
 
-        public void Insertar(string nombre, string apellido, string numeroDocumento, string tipoDocumento, string telefono, string email, string nombreUsuario, string pass)
+        public Suscriptor BuscarSuscriptor(string tipoDoc, string nroDoc)
         {
-            nuevo.Insertar(nombre, apellido, numeroDocumento, tipoDocumento, telefono, email, nombreUsuario, pass);
+            return nuevo.BuscarSuscriptor(tipoDoc, nroDoc);
         }
 
-
-
+        public bool ModificarSuscriptor(Suscriptor suscriptor)
+        {
+            return nuevo.ModificarSuscriptor(suscriptor);
+        }
 
     }
 }

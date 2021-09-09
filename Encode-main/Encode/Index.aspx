@@ -5,7 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous"/>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title></title>
 </head>
 <body>
@@ -17,18 +18,19 @@
         <div class="form-row align-items-center">
             <div class="col">
                 <label for="validationCustom01">Tipo Documento</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                    <option>DNI</option>
-                    <option>Pasaporte</option>
-                    <option>Otro</option>                    
-                </select>
+                <asp:DropDownList ID="cboTipoDoc" runat="server" CssClass="form-control">
+                          <asp:ListItem Text="Seleccione un tipo de documento..."/>
+                          <asp:ListItem Text="DNI"/>
+                          <asp:ListItem Text="LC"/>
+                          <asp:ListItem Text="PASAPORTE"/>
+                </asp:DropDownList>
             </div>
             <div class="col">
                 <label for="validationCustom01">Numero de Documento</label>
                 <label class="sr-only" for="inlineFormInputGroup">Username</label>
                 <div class="input-group">
                     <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="123456">--%>
-                    <asp:TextBox runat="server" CssClass="form-control" ID="txtDocumento" placeholder="123456"/>                    
+                    <asp:TextBox runat="server" CssClass="form-control" ID="txtDocumento" placeholder="Numero documento"/>                    
                 </div>
             </div>
             <div class="col">
@@ -43,14 +45,14 @@
                 <label for="validationCustom01">Nombre</label>
                 <label class="sr-only" for="inlineFormInput">Name</label>
                 <%--<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Juan">--%>
-                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="TxtNombre" placeholder="Juan"/>
+                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtNombre" placeholder="Nombre"/>
             </div>
             <div class="col">
                 <label for="validationCustom01">Apellido</label>
                 <label class="sr-only" for="inlineFormInputGroup">Username</label>
                 <div class="input-group mb-2">
                     <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Perez">--%>
-                    <asp:TextBox runat="server" CssClass="form-control" ID="TxtApellido" placeholder="Perez"/>
+                    <asp:TextBox runat="server" CssClass="form-control" ID="txtApellido" placeholder="Apellido"/>
                 </div>
             </div>
             <div class="col">
@@ -62,17 +64,20 @@
         
         <div class="form-row align-items-center">
             <div class="col">
+                <script>
+
+                </script>
                 <label for="validationCustom01">Direccion</label>
                 <label class="sr-only" for="inlineFormInput">Name</label>
                 <%--<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Bolivar 123">--%>
-                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="TextBox3" placeholder="Bolivar 123"/>
+                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtDireccion" placeholder="Direccion"/>
             </div>
             <div class="col">
                 <label for="validationCustom01">Email</label>
                 <label class="sr-only" for="inlineFormInputGroup">Username</label>
                 <div class="input-group mb-2">
                     <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="jperez@encodesa.com.ar">--%>
-                    <asp:TextBox runat="server" CssClass="form-control" ID="TextBox4" placeholder="jperez@encodesa.com.ar"/>
+                    <asp:TextBox runat="server" CssClass="form-control" ID="txtEmail" placeholder="@encodesa.com.ar"/>
                 </div>
             </div>
             <div class="col">
@@ -87,14 +92,14 @@
                 <label for="validationCustom01">Telefono</label>
                 <label class="sr-only" for="inlineFormInput">Name</label>
                 <%--<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="156321564">--%>
-                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtTelefono" placeholder="156321564"/>
+                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtTelefono" placeholder="Telefono"/>
             </div>
             <div class="col">
                 <label for="validationCustom01">Estado</label>
                 <label class="sr-only" for="inlineFormInputGroup">Username</label>
                 <div class="input-group mb-2">
                     <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="No Suscripto">--%>
-                    <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtEstado" placeholder="No Suscripto"/>
+                    <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtEstado" placeholder="-"/>
                 </div>
             </div>
             <div class="col">
@@ -109,14 +114,14 @@
                 <label for="validationCustom01">Nombre de usuario</label>
                 <label class="sr-only" for="inlineFormInput">Name</label>
                 <%--<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="jperez">--%>
-                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtNombreUsuario" placeholder="jperez"/>
+                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtNombreUsuario" placeholder="Usuario"/>
             </div>
             <div class="col">
                 <label for="validationCustom01">Contraseña</label>
                 <label class="sr-only" for="inlineFormInputGroup">Username</label>
                 <div class="input-group mb-2">
                     <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="*******">--%>
-                    <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtContraseña" placeholder="********"/>
+                    <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtContrasenia" placeholder="********" type="password"/>
                 </div>
             </div>
             <div class="col">

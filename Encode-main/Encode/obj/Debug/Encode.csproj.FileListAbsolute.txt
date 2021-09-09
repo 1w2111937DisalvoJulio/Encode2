@@ -124,3 +124,5 @@ C:\Users\Julio\Desktop\Encode-main\Encode\obj\Debug\Encode.csproj.CoreCompileInp
 C:\Users\Julio\Desktop\Encode-main\Encode\obj\Debug\Encode.csproj.CopyComplete
 C:\Users\Julio\Desktop\Encode-main\Encode\obj\Debug\Encode.dll
 C:\Users\Julio\Desktop\Encode-main\Encode\obj\Debug\Encode.pdb
+C:\Users\Julio\Desktop\Encode-main\Encode\bin\DAL.dll
+C:\Users\Julio\Desktop\Encode-main\Encode\bin\DAL.pdb

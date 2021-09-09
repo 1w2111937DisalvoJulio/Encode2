@@ -12,69 +12,135 @@ namespace DAL
     public class SuscriptorDAL
     {
         private Conexion conexion = new Conexion();
-        SqlDataReader leer;
+        SqlDataReader leer = null;
         DataTable tabla = new DataTable();
-        SqlCommand comando = new SqlCommand();
-        public DataTable Mostrar()
+        SqlCommand comando = new SqlCommand();       
+
+        public Suscriptor BuscarSuscriptor(string tipoDoc, string nroDoc)
         {
+            try
+            {
+                Suscriptor suscriptor = new Suscriptor();
+                conexion.AbrirConexion();
+                comando.Connection = conexion.AbrirConexion();
+                comando.CommandText = "select * " +
+                                     "from Suscriptor" +
+                                     " where TipoDocumento = '" + tipoDoc + "' and NumeroDocumento = '" + nroDoc + "'";
+                leer = comando.ExecuteReader();
+                if (leer.Read())
+                {
+                    if (!leer.IsDBNull(0))
+                    {
+                        suscriptor.IdSuscriptor = leer.GetInt32(0);
+                    }
+                    if (!leer.IsDBNull(1))
+                    {
+                        suscriptor.NombreSuscriptor = leer.GetString(1);
+                    }
+                    if (!leer.IsDBNull(2))
+                    {
+                        suscriptor.ApellidoSuscriptor = leer.GetString(2);
+                    }
+                    if (!leer.IsDBNull(3))
+                    {
+                        suscriptor.NumeroDocumento = leer.GetString(3);
+                    }
+                    if (!leer.IsDBNull(4))
+                    {
+                        suscriptor.TipoDocumento = leer.GetString(4);
+                    }
+                    if (!leer.IsDBNull(5))
+                    {
+                        suscriptor.Direccion = leer.GetString(5);
+                    }
+                    if (!leer.IsDBNull(6))
+                    {
+                        suscriptor.NroTelefono = leer.GetString(6);
+                    }
+                    if (!leer.IsDBNull(7))
+                    {
+                        suscriptor.Email = leer.GetString(7);
+                    }
+                    if (!leer.IsDBNull(8))
+                    {
+                        suscriptor.NombreUsuario = leer.GetString(8);
+                    }
+                    if (!leer.IsDBNull(9))
+                    {
+                        suscriptor.Contrasenia = leer.GetString(9);
+                    }
+                    return suscriptor;
+                }
+                return suscriptor = null;
+            }
 
-            comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "SELECT * FROM Suscriptor";
-            comando.CommandType = CommandType.StoredProcedure;
-            leer = comando.ExecuteReader();
-            tabla.Load(leer);
-            conexion.CerrarConexion();
-            return tabla;
-
+            catch (Exception ex)
+            {
+                return null;
+            }
+            finally
+            {
+                conexion.CerrarConexion();
+            }
         }
 
-        public bool Insertar(Suscriptor suscriptor)
+        public bool InsertarSuscriptor(Suscriptor suscriptor)
         {
             try
             {
             string procedure = "sp_insertarSuscriptor";    
             comando.Connection = conexion.AbrirConexion();
             comando.CommandType = CommandType.StoredProcedure;
-            comando.CommandText = procedure;            
-            comando.Parameters.AddWithValue("@nombre", suscriptor.Nombre);
-            comando.Parameters.AddWithValue("@apellido", suscriptor.Apellido);
-            comando.Parameters.AddWithValue("@numeroDocumento", suscriptor.NumeroDocumento);
-            comando.Parameters.AddWithValue("@tipoDocumento", suscriptor.TipoDocumento);
-            comando.Parameters.AddWithValue("@telefono", suscriptor.Telefono);
-            comando.Parameters.AddWithValue("@email", suscriptor.Email);
-            comando.Parameters.AddWithValue("@nombreUsuario", suscriptor.NombreUsuario);
-            comando.Parameters.AddWithValue("@pass", suscriptor.Pass);
-            comando.ExecuteNonQuery();
+            comando.CommandText = procedure;
             comando.Parameters.Clear();
+            comando.Parameters.AddWithValue("@nombre", suscriptor.NombreSuscriptor);
+            comando.Parameters.AddWithValue("@apellido", suscriptor.ApellidoSuscriptor);
+            comando.Parameters.AddWithValue("@nroDocumento", suscriptor.NumeroDocumento);
+            comando.Parameters.AddWithValue("@tipoDocumento", suscriptor.TipoDocumento);
+            comando.Parameters.AddWithValue("@telefono", suscriptor.NroTelefono);
+            comando.Parameters.AddWithValue("@email", suscriptor.Email);
+            comando.Parameters.AddWithValue("@direccion", suscriptor.Direccion);
+            comando.Parameters.AddWithValue("@nomUsuario", suscriptor.NombreUsuario);
+            comando.Parameters.AddWithValue("@pass", suscriptor.Contrasenia);
+            comando.ExecuteNonQuery();
+            
                 return true;    
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 conexion.CerrarConexion();
                 return false;
             }
         }
 
+        public bool ModificarSuscriptor(Suscriptor suscriptor)
+        {
+            try
+            {
+                string procedure = "sp_modificarSuscriptor";
+                comando.Connection = conexion.AbrirConexion();
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.CommandText = procedure;
+                comando.Parameters.Clear();
+                comando.Parameters.AddWithValue("@nombre", suscriptor.NombreSuscriptor);
+                comando.Parameters.AddWithValue("@apellido", suscriptor.ApellidoSuscriptor);                
+                comando.Parameters.AddWithValue("@telefono", suscriptor.NroTelefono);
+                comando.Parameters.AddWithValue("@email", suscriptor.Email);
+                comando.Parameters.AddWithValue("@direccion", suscriptor.Direccion);               
+                comando.Parameters.AddWithValue("@pass", suscriptor.Contrasenia);
+                comando.Parameters.AddWithValue("@nroDocumento", suscriptor.NumeroDocumento);
+                comando.ExecuteNonQuery();
 
-        //string cadenaConexion = System.Configuration.ConfigurationManager.ConnectionStrings["CadenaBD"].ConnectionString;
-        //SqlConnection cn = new SqlConnection(cadenaConexion);
+                return true;
+            }
+            catch (Exception ex)
+            {
 
-        //public void Insertar(Suscriptor nuevo)
-        //{
-        //    try
-        //    {
-
-
-
-
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+                conexion.CerrarConexion();
+                return false;
+            }
+        }
+        
 
 
 
