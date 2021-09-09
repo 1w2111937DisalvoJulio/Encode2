@@ -11,13 +11,7 @@ namespace BLL
 {
     public class SuscriptorBLL
     {
-        public SuscriptorDAL nuevo = new SuscriptorDAL();
-        //public DataTable Buscar()
-        //{
-        //    DataTable tabla = new DataTable();
-        //    tabla = nuevo.Buscar();
-        //    return tabla;
-        //}
+        public SuscriptorDAL nuevo = new SuscriptorDAL();        
 
         public bool Insertar(Suscriptor suscriptor)
         {

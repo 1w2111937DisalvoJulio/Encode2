@@ -24,32 +24,18 @@ namespace Encode
             DeshabilitarCampos();
             btnModificar.Enabled = false;
             btnRegistrarSuscripcion.Enabled = false;
+            btnGuardar.Enabled = false;
         }
 
-        //cargamos los campos cuando buscamos un suscriptor
+      
 
-
-        //public void CargarCampos(Suscriptor suscriptor) 
-        //{
-        //    txtNombre.Text = suscriptor.NombreSuscriptor;
-        //    txtApellido.Text = suscriptor.ApellidoSuscriptor;
-        //    txtDocumento.Text = suscriptor.NumeroDocumento;
-        //    cboTipoDoc.SelectedValue = suscriptor.TipoDocumento;
-        //    txtDireccion.Text = suscriptor.Direccion;
-        //    txtTelefono.Text = suscriptor.NroTelefono;
-        //    txtEmail.Text = suscriptor.Email;
-        //    txtNombreUsuario.Text = suscriptor.NombreUsuario;
-        //    txtContrasenia.Text = suscriptor.Contrasenia;      
-
-        //}
-
-        public void BuscarSuscriptor(string tipoDoc, string nroDoc)
+        public bool BuscarSuscriptor(string tipoDoc, string nroDoc)
         {
             Suscriptor suscriptor = suscriptorBLL.BuscarSuscriptor(tipoDoc, nroDoc);
             if (suscriptor == null)
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "MyFunction", "MsjNoSeEncontroSuscriptor();", true);
-                return;
+                return false;
             }
 
             if (tipoDoc == suscriptor.TipoDocumento && nroDoc == suscriptor.NumeroDocumento)
@@ -66,7 +52,13 @@ namespace Encode
 
                 DeshabilitarCampos();
                 btnModificar.Enabled = true;
+                return true;
             }
+            else
+            {
+                return false;
+            }
+
         }
 
         protected void btnBuscar_Click(object sender, EventArgs e)
@@ -86,9 +78,10 @@ namespace Encode
         {
             HabilitarCampos();
             LimpiarCampos();
-
+            btnGuardar.Enabled = true;
             nuevo = true;
             ViewState["variableNuevo"] = nuevo;
+            btnRegistrarSuscripcion.Enabled = true;
         }
 
         protected void btnModificar_Click(object sender, EventArgs e)
@@ -99,6 +92,8 @@ namespace Encode
             HabilitarCampos();
             nuevo = false;
             ViewState["variableNuevo"] = nuevo;
+            txtNombreUsuario.Enabled = false;
+            btnGuardar.Enabled = true;
         }
 
         public bool Insertar(string nombre, string apellido, string numeroDocumento, string tipoDocumento, string direccion, string email, string telefono, string nombreUsuario, string pass)
@@ -131,28 +126,44 @@ namespace Encode
             suscriptor.Direccion = direccion;
             suscriptor.Email = email;
             suscriptor.NroTelefono = telefono;            
-            suscriptor.Contrasenia = pass;
+            suscriptor.Contrasenia = pass;            
             return suscriptorBLL.ModificarSuscriptor(suscriptor);
+            
         }
 
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (nuevo)
+            string vacio = CamposVacios();
+            if (vacio != "")
             {
-                Insertar(txtNombre.Text, txtApellido.Text, txtDocumento.Text, cboTipoDoc.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtNombreUsuario.Text, txtContrasenia.Text);
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Datos cargados con exito!')", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Falta completar Datos:\\n" + vacio + "')", true);
+
             }
             else
             {
-                Modificar(txtNombre.Text, txtApellido.Text, cboTipoDoc.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtContrasenia.Text);
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Modificacion con exito!')", true);
+                nuevo = (bool)ViewState["variableNuevo"];//almacena los datos sin enviar el form
+                if (nuevo)
+                {
+                    Insertar(txtNombre.Text, txtApellido.Text, txtDocumento.Text, cboTipoDoc.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtNombreUsuario.Text, txtContrasenia.Text);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Datos cargados con exito!')", true);
+                }
+                else
+                {
+                    Modificar(txtNombre.Text, txtApellido.Text, cboTipoDoc.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtContrasenia.Text);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Modificacion con exito!')", true);
+                    DeshabilitarCampos();
+                }
             }
         }
 
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
-
+            LimpiarCampos();
+            txtDocumento.Enabled = true;
+            cboTipoDoc.Focus();
+            cboTipoDoc.Enabled = true;
+            cboTipoDoc.SelectedItem.Equals(0);
         }
 
         protected void btnRegistrarSuscripcion_Click(object sender, EventArgs e)
@@ -160,10 +171,7 @@ namespace Encode
 
         }
 
-        //public void ModificarSuscriptor()
-        //{
-
-        //}
+       
 
         public void DeshabilitarCampos()
         {
@@ -199,6 +207,61 @@ namespace Encode
             txtNombreUsuario.Text = "";
             txtContrasenia.Text = "";
         }
+
+        public string CamposVacios()
+        {
+            string faltanDatos = "";
+            if (cboTipoDoc.SelectedItem.Equals(0))
+            {
+                faltanDatos += "Seleccionar tipo dni\\n";
+                cboTipoDoc.Focus();
+            }
+            if (String.IsNullOrEmpty(txtDocumento.Text))
+            {
+                faltanDatos += "Debe completar numero de documento\\n";
+                txtDocumento.Focus();
+            }
+            if (String.IsNullOrEmpty(txtNombre.Text))
+            {
+                faltanDatos += "Debe completar campo nombre\\n";
+                txtNombre.Focus();
+            }
+            if (String.IsNullOrEmpty(txtApellido.Text))
+            {
+                faltanDatos += "Debe completar campo apellido\\n";
+                txtApellido.Focus();
+            }
+            if (String.IsNullOrEmpty(txtDireccion.Text))
+            {
+                faltanDatos += "Debe completar campo direccion\\n";
+                txtDireccion.Focus();
+            }
+            if (String.IsNullOrEmpty(txtEmail.Text))
+            {
+                faltanDatos += "Debe completar campo email\\n";
+                txtEmail.Focus();
+            }
+            if (String.IsNullOrEmpty(txtTelefono.Text))
+            {
+                faltanDatos += "Debe completar campo telefono\\n";
+                txtTelefono.Focus();
+            }
+            if (String.IsNullOrEmpty(txtNombreUsuario.Text))
+            {
+                faltanDatos += "Debe completar campo nombre usuario\\n";
+                txtNombre.Focus();
+            }
+            if (String.IsNullOrEmpty(txtContrasenia.Text))
+            {
+                faltanDatos += "Debe completar campo contrasenia\\n";
+                txtContrasenia.Focus();
+                
+            }
+            return faltanDatos;
+        }
+
+
+        
 
     }
 }

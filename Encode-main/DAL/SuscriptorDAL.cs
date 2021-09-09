@@ -74,7 +74,7 @@ namespace DAL
                 return suscriptor = null;
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -106,10 +106,13 @@ namespace DAL
             
                 return true;    
             }
-            catch (Exception ex)
+            catch (Exception)
+            {                
+                return false;
+            }
+            finally
             {
                 conexion.CerrarConexion();
-                return false;
             }
         }
 
@@ -133,15 +136,14 @@ namespace DAL
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
                 conexion.CerrarConexion();
                 return false;
             }
         }
         
-
+        
 
 
     }
