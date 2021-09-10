@@ -27,14 +27,15 @@ namespace Encode
             btnGuardar.Enabled = false;
         }
 
-      
+
 
         public bool BuscarSuscriptor(string tipoDoc, string nroDoc)
         {
             Suscriptor suscriptor = suscriptorBLL.BuscarSuscriptor(tipoDoc, nroDoc);
             if (suscriptor == null)
             {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "MyFunction", "MsjNoSeEncontroSuscriptor();", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No se encontro suscriptor!\\n Revisar Tipo documento y Numero documento')", true);
+                cboTipoDoc.Focus();
                 return false;
             }
 
@@ -78,7 +79,9 @@ namespace Encode
         {
             HabilitarCampos();
             LimpiarCampos();
+            cboTipoDoc.Focus();
             btnGuardar.Enabled = true;
+            btnNuevo.Enabled = false;
             nuevo = true;
             ViewState["variableNuevo"] = nuevo;
             btnRegistrarSuscripcion.Enabled = true;
@@ -94,41 +97,41 @@ namespace Encode
             ViewState["variableNuevo"] = nuevo;
             txtNombreUsuario.Enabled = false;
             btnGuardar.Enabled = true;
+            btnNuevo.Enabled = false;
         }
 
-        public bool Insertar(string nombre, string apellido, string numeroDocumento, string tipoDocumento, string direccion, string email, string telefono, string nombreUsuario, string pass)
+        public bool Insertar(string nombre, string apellido, string numeroDocumento, string tipoDocumento, string direccion, string telefono, string email, string nombreUsuario, string pass)
         {
             SuscriptorBLL suscriptorBLL = new SuscriptorBLL();
             Suscriptor suscriptor = new Suscriptor();
 
             suscriptor.NombreSuscriptor = nombre;
             suscriptor.ApellidoSuscriptor = apellido;
-            suscriptor.Direccion = direccion;
             suscriptor.NumeroDocumento = numeroDocumento;
             suscriptor.TipoDocumento = tipoDocumento;
             suscriptor.Direccion = direccion;
-            suscriptor.Email = email;
             suscriptor.NroTelefono = telefono;
+            suscriptor.Email = email;
             suscriptor.NombreUsuario = nombreUsuario;
             suscriptor.Contrasenia = pass;
             return suscriptorBLL.Insertar(suscriptor);
         }
 
-        public bool Modificar(string nombre, string apellido, string tipoDocumento, string direccion, string email, string telefono, string pass)
+        public bool Modificar(string nombre, string apellido, string nroDocumento, string direccion, string telefono, string email, string pass)
         {
             SuscriptorBLL suscriptorBLL = new SuscriptorBLL();
             Suscriptor suscriptor = new Suscriptor();
 
             suscriptor.NombreSuscriptor = nombre;
             suscriptor.ApellidoSuscriptor = apellido;
-            suscriptor.Direccion = direccion;            
-            suscriptor.TipoDocumento = tipoDocumento;
+            suscriptor.NumeroDocumento = nroDocumento;
             suscriptor.Direccion = direccion;
+            suscriptor.NroTelefono = telefono;
             suscriptor.Email = email;
-            suscriptor.NroTelefono = telefono;            
-            suscriptor.Contrasenia = pass;            
-            return suscriptorBLL.ModificarSuscriptor(suscriptor);
             
+            suscriptor.Contrasenia = pass;
+            return suscriptorBLL.ModificarSuscriptor(suscriptor);
+
         }
 
 
@@ -150,7 +153,7 @@ namespace Encode
                 }
                 else
                 {
-                    Modificar(txtNombre.Text, txtApellido.Text, cboTipoDoc.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtContrasenia.Text);
+                    Modificar(txtNombre.Text, txtApellido.Text, txtDocumento.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtContrasenia.Text);
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Modificacion con exito!')", true);
                     DeshabilitarCampos();
                 }
@@ -164,14 +167,26 @@ namespace Encode
             cboTipoDoc.Focus();
             cboTipoDoc.Enabled = true;
             cboTipoDoc.SelectedItem.Equals(0);
+            HabilitarCampos();
         }
+
+        //public bool RegistrarSuscripcion()
+        //{
+        //    Suscriptor suscriptor = suscriptorBLL.BuscarSuscriptor(cboTipoDoc.SelectedValue, txtDocumento.Text);
+        //    Suscripcion suscripcion = new Suscripcion();
+        //    SuscripcionBLL suscripcionBLL = new SuscripcionBLL();
+        //    suscripcion.IdSuscriptor = suscriptor.IdSuscriptor;
+        //    return suscripcionBLL.RegistrarSuscripcion(sus);
+        //}
 
         protected void btnRegistrarSuscripcion_Click(object sender, EventArgs e)
         {
-
+            //RegistrarSuscripcion();
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Suscripcion realizada con exito!')", true);
+            
         }
 
-       
+
 
         public void DeshabilitarCampos()
         {
@@ -255,13 +270,13 @@ namespace Encode
             {
                 faltanDatos += "Debe completar campo contrasenia\\n";
                 txtContrasenia.Focus();
-                
+
             }
             return faltanDatos;
         }
 
 
-        
+
 
     }
 }

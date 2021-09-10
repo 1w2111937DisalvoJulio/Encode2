@@ -14,7 +14,7 @@ namespace DAL
         private Conexion conexion = new Conexion();
         SqlDataReader leer = null;
         DataTable tabla = new DataTable();
-        SqlCommand comando = new SqlCommand();       
+        SqlCommand comando = new SqlCommand();
 
         public Suscriptor BuscarSuscriptor(string tipoDoc, string nroDoc)
         {
@@ -88,26 +88,26 @@ namespace DAL
         {
             try
             {
-            string procedure = "sp_insertarSuscriptor";    
-            comando.Connection = conexion.AbrirConexion();
-            comando.CommandType = CommandType.StoredProcedure;
-            comando.CommandText = procedure;
-            comando.Parameters.Clear();
-            comando.Parameters.AddWithValue("@nombre", suscriptor.NombreSuscriptor);
-            comando.Parameters.AddWithValue("@apellido", suscriptor.ApellidoSuscriptor);
-            comando.Parameters.AddWithValue("@nroDocumento", suscriptor.NumeroDocumento);
-            comando.Parameters.AddWithValue("@tipoDocumento", suscriptor.TipoDocumento);
-            comando.Parameters.AddWithValue("@telefono", suscriptor.NroTelefono);
-            comando.Parameters.AddWithValue("@email", suscriptor.Email);
-            comando.Parameters.AddWithValue("@direccion", suscriptor.Direccion);
-            comando.Parameters.AddWithValue("@nomUsuario", suscriptor.NombreUsuario);
-            comando.Parameters.AddWithValue("@pass", suscriptor.Contrasenia);
-            comando.ExecuteNonQuery();
-            
-                return true;    
+                string procedure = "sp_insertarSuscriptor";
+                comando.Connection = conexion.AbrirConexion();
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.CommandText = procedure;
+                comando.Parameters.Clear();
+                comando.Parameters.AddWithValue("@nombre", suscriptor.NombreSuscriptor);
+                comando.Parameters.AddWithValue("@apellido", suscriptor.ApellidoSuscriptor);
+                comando.Parameters.AddWithValue("@nroDocumento", suscriptor.NumeroDocumento);
+                comando.Parameters.AddWithValue("@tipoDocumento", suscriptor.TipoDocumento);
+                comando.Parameters.AddWithValue("@direccion", suscriptor.Direccion);
+                comando.Parameters.AddWithValue("@telefono", suscriptor.NroTelefono);
+                comando.Parameters.AddWithValue("@email", suscriptor.Email);
+                comando.Parameters.AddWithValue("@nomUsuario", suscriptor.NombreUsuario);
+                comando.Parameters.AddWithValue("@pass", suscriptor.Contrasenia);
+                comando.ExecuteNonQuery();
+
+                return true;
             }
             catch (Exception)
-            {                
+            {
                 return false;
             }
             finally
@@ -122,17 +122,16 @@ namespace DAL
             {
                 string procedure = "sp_modificarSuscriptor";
                 comando.Connection = conexion.AbrirConexion();
-                comando.CommandType = CommandType.StoredProcedure;
                 comando.CommandText = procedure;
-                comando.Parameters.Clear();
+                comando.CommandType = CommandType.StoredProcedure;
                 comando.Parameters.AddWithValue("@nombre", suscriptor.NombreSuscriptor);
-                comando.Parameters.AddWithValue("@apellido", suscriptor.ApellidoSuscriptor);                
-                comando.Parameters.AddWithValue("@telefono", suscriptor.NroTelefono);
-                comando.Parameters.AddWithValue("@email", suscriptor.Email);
-                comando.Parameters.AddWithValue("@direccion", suscriptor.Direccion);               
-                comando.Parameters.AddWithValue("@pass", suscriptor.Contrasenia);
+                comando.Parameters.AddWithValue("@apellido", suscriptor.ApellidoSuscriptor);
                 comando.Parameters.AddWithValue("@nroDocumento", suscriptor.NumeroDocumento);
+                comando.Parameters.AddWithValue("@direccion", suscriptor.Direccion);
+                comando.Parameters.AddWithValue("@telefono", suscriptor.NroTelefono); comando.Parameters.AddWithValue("@email", suscriptor.Email);
+                comando.Parameters.AddWithValue("@pass", suscriptor.Contrasenia);
                 comando.ExecuteNonQuery();
+                comando.Parameters.Clear();
 
                 return true;
             }
@@ -142,8 +141,8 @@ namespace DAL
                 return false;
             }
         }
-        
-        
+
+
 
 
     }

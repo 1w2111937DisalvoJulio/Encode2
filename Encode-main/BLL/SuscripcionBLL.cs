@@ -8,7 +8,7 @@ using Entidades;
 
 namespace BLL
 {
-    class SuscripcionBLL
+    public class SuscripcionBLL
     {
         public SuscripcionDAL nuevo = new SuscripcionDAL();
 

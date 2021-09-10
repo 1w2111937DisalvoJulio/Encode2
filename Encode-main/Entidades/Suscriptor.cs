@@ -10,6 +10,7 @@ namespace Entidades
 {
     public class Suscriptor
     {
+       
         public int IdSuscriptor { get; set; }
         public string NombreSuscriptor { get; set; }
         public string ApellidoSuscriptor { get; set; }
