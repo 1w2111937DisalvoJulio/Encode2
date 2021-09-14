@@ -142,7 +142,37 @@ namespace DAL
             }
         }
 
+        //VALIDAR NOMBRE USUARIO
+        public bool ValidarNombreUsuario(string nomUsu)
+        {
+            try
+            {
+                int resultado;
+                //Suscriptor suscriptor = new Suscriptor();
+                conexion.AbrirConexion();
+                comando.Connection = conexion.AbrirConexion();
+                comando.CommandText = "select * " +
+                                     "from Suscriptor" +
+                                     " where NombreUsuario = '{0}')";
+                resultado = comando.ExecuteNonQuery();
+                if (resultado != 0)
+                {
+                    return true;
+                }
 
+                return false;
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conexion.CerrarConexion();
+            }
+
+        }
 
 
     }

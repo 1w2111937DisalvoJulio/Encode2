@@ -41,7 +41,7 @@ namespace DAL
         }
 
         //VERIFICAR SUSCRIPCION
-        public bool VerificarSuscripcion(Suscriptor suscriptor)
+        public  bool VerificarSuscripcion(Suscriptor suscriptor)
         {
             try
             {

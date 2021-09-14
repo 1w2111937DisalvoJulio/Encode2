@@ -11,12 +11,15 @@ namespace BLL
     public class SuscripcionBLL
     {
         public SuscripcionDAL nuevo = new SuscripcionDAL();
-
         public Suscripcion RegistrarSuscripcion(Suscriptor sus)
         {
             return nuevo.RegistrarSuscripcion(sus);
         }
 
+       public bool VerificarSus (Suscriptor suscriptor)
+        {
+            return nuevo.VerificarSuscripcion(suscriptor);
+        }
 
 
     }

@@ -16,3 +16,12 @@ C:\Users\Julio\Desktop\Encode-main\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.ca
 C:\Users\Julio\Desktop\Encode-main\DAL\obj\Debug\DAL.csproj.CopyComplete
 C:\Users\Julio\Desktop\Encode-main\DAL\obj\Debug\DAL.dll
 C:\Users\Julio\Desktop\Encode-main\DAL\obj\Debug\DAL.pdb
+C:\Users\Julio\Documents\GitHub\Encode2\Encode-main\DAL\bin\Debug\DAL.dll
+C:\Users\Julio\Documents\GitHub\Encode2\Encode-main\DAL\bin\Debug\DAL.pdb
+C:\Users\Julio\Documents\GitHub\Encode2\Encode-main\DAL\bin\Debug\Entidades.dll
+C:\Users\Julio\Documents\GitHub\Encode2\Encode-main\DAL\bin\Debug\Entidades.pdb
+C:\Users\Julio\Documents\GitHub\Encode2\Encode-main\DAL\obj\Debug\DAL.csproj.AssemblyReference.cache
+C:\Users\Julio\Documents\GitHub\Encode2\Encode-main\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
+C:\Users\Julio\Documents\GitHub\Encode2\Encode-main\DAL\obj\Debug\DAL.csproj.CopyComplete
+C:\Users\Julio\Documents\GitHub\Encode2\Encode-main\DAL\obj\Debug\DAL.dll
+C:\Users\Julio\Documents\GitHub\Encode2\Encode-main\DAL\obj\Debug\DAL.pdb
