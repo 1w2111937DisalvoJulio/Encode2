@@ -11,7 +11,9 @@ namespace BLL
 {
     public class SuscriptorBLL
     {
-        public SuscriptorDAL nuevo = new SuscriptorDAL();        
+        public SuscriptorDAL nuevo = new SuscriptorDAL();
+        
+
 
         public bool Insertar(Suscriptor suscriptor)
         {
@@ -28,5 +30,11 @@ namespace BLL
             return nuevo.ModificarSuscriptor(suscriptor);
         }
 
+        public int ValidarNombreUsuario(string nomUsu)
+        {
+            return nuevo.ValidarNombreUsuario(nomUsu);
+        }
+
+        
     }
 }

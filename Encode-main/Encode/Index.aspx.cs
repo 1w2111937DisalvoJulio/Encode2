@@ -15,7 +15,7 @@ namespace Encode
     public partial class Index : System.Web.UI.Page
     {
         SuscriptorBLL suscriptorBLL = new SuscriptorBLL();
-
+       
         int id = 0;
         bool nuevo = true;
         protected void Page_Load(object sender, EventArgs e)
@@ -27,14 +27,13 @@ namespace Encode
             btnGuardar.Enabled = false;
         }
 
-
-
         public Suscriptor BuscarSuscriptor(string tipoDoc, string nroDoc)
         {
             Suscriptor suscriptor = suscriptorBLL.BuscarSuscriptor(tipoDoc, nroDoc);
             if (suscriptor == null)
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No se encontro suscriptor!\\n Revisar Tipo documento y Numero documento')", true);
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No se encontro suscriptor!\\n Revisar Tipo documento y Numero documento')", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "swal('hola', 'succes");
                 cboTipoDoc.Focus();
                 return suscriptor;
             }
@@ -76,7 +75,7 @@ namespace Encode
                     SuscripcionBLL suscripcion = new SuscripcionBLL();                    
                     if (suscripcion.VerificarSus(suscriptor))
                     {
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Tiene Suscripcion')", true);
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('El suscriptor tiene una suscripción vigente.')", true);
                         txtEstado.Text = "Suscripto";
                         btnRegistrarSuscripcion.Enabled = false;
                         btnNuevo.Enabled = false;
@@ -103,13 +102,13 @@ namespace Encode
         protected void btnNuevo_Click(object sender, EventArgs e)
         {
             HabilitarCampos();
-            LimpiarCampos();
-            cboTipoDoc.Focus();
+            //LimpiarCampos();
+            txtNombre.Focus();
             btnGuardar.Enabled = true;
             btnNuevo.Enabled = false;
             nuevo = true;
             ViewState["variableNuevo"] = nuevo;
-            btnRegistrarSuscripcion.Enabled = true;
+            btnRegistrarSuscripcion.Enabled = false;
         }
 
         protected void btnModificar_Click(object sender, EventArgs e)
@@ -162,6 +161,7 @@ namespace Encode
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            
             string vacio = CamposVacios();
             if (vacio != "")
             {
@@ -174,8 +174,17 @@ namespace Encode
                 //almacena los datos sin enviar el formulario
                 if (nuevo)
                 {
-                    Insertar(txtNombre.Text, txtApellido.Text, txtDocumento.Text, cboTipoDoc.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtNombreUsuario.Text, txtContrasenia.Text);
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Datos cargados con exito!')", true);
+                    if (suscriptorBLL.ValidarNombreUsuario(txtNombreUsuario.Text)>0)
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Este nombre de usuario ya existe!')", true);
+                        HabilitarCampos();
+                        btnGuardar.Enabled = true;
+                    }
+                    else
+                    {
+                        Insertar(txtNombre.Text, txtApellido.Text, txtDocumento.Text, cboTipoDoc.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtNombreUsuario.Text, txtContrasenia.Text);
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Datos cargados con exito!')", true);
+                    }
                 }
                 else
                 {

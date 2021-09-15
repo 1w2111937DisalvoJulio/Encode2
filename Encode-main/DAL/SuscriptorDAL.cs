@@ -15,6 +15,7 @@ namespace DAL
         SqlDataReader leer = null;
         DataTable tabla = new DataTable();
         SqlCommand comando = new SqlCommand();
+        //EncryptKeys encryptar = new EncryptKeys();
 
         public Suscriptor BuscarSuscriptor(string tipoDoc, string nroDoc)
         {
@@ -101,7 +102,7 @@ namespace DAL
                 comando.Parameters.AddWithValue("@telefono", suscriptor.NroTelefono);
                 comando.Parameters.AddWithValue("@email", suscriptor.Email);
                 comando.Parameters.AddWithValue("@nomUsuario", suscriptor.NombreUsuario);
-                comando.Parameters.AddWithValue("@pass", suscriptor.Contrasenia);
+                comando.Parameters.AddWithValue("@pass", EncryptKeys.EncriptarPassword(suscriptor.Contrasenia, "Keys"));
                 comando.ExecuteNonQuery();
 
                 return true;
@@ -143,29 +144,23 @@ namespace DAL
         }
 
         //VALIDAR NOMBRE USUARIO
-        public bool ValidarNombreUsuario(string nomUsu)
+        public int ValidarNombreUsuario(string nomUsu)
         {
             try
             {
-                int resultado;
-                //Suscriptor suscriptor = new Suscriptor();
-                conexion.AbrirConexion();
+                int resultado;                
                 comando.Connection = conexion.AbrirConexion();
-                comando.CommandText = "select * " +
+                comando.CommandText = string.Format("select count(*) " +
                                      "from Suscriptor" +
-                                     " where NombreUsuario = '{0}')";
-                resultado = comando.ExecuteNonQuery();
-                if (resultado != 0)
-                {
-                    return true;
-                }
-
-                return false;
+                                     " where NombreUsuario = '{0}'", nomUsu);
+                resultado = (int)comando.ExecuteScalar();
+                return resultado;
+                
             }
 
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception (e.Message);
             }
             finally
             {
