@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous"/>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="js/JavaScript.js"></script>
     <title></title>
 </head>
 <body>
@@ -74,7 +75,7 @@
             </div>
             <div class="col">
                 <label for="validationCustom01">Email</label>
-                <label class="sr-only" for="inlineFormInputGroup">Username</label>
+                <label class="sr-only" for="inlineFormInputGroup" textmodel="Email">Username</label>
                 <div class="input-group mb-2">
                     <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="jperez@encodesa.com.ar">--%>
                     <asp:TextBox runat="server" CssClass="form-control" ID="txtEmail" placeholder="@encodesa.com.ar"/>
@@ -134,5 +135,6 @@
         <asp:Button runat="server" ID="btnRegistrarSuscripcion" CssClass="btn btn-success mt-4 btn-lg" Text="Registrar Suscripcion" OnClick="btnRegistrarSuscripcion_Click"/>
 
     </form>
+    
 </body>
 </html>

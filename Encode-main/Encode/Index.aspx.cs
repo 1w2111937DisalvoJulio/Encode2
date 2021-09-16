@@ -25,15 +25,17 @@ namespace Encode
             btnModificar.Enabled = false;
             btnRegistrarSuscripcion.Enabled = false;
             btnGuardar.Enabled = false;
+            btnCancelar.Enabled = false;
+            btnNuevo.Enabled = false;
         }
 
         public Suscriptor BuscarSuscriptor(string tipoDoc, string nroDoc)
         {
             Suscriptor suscriptor = suscriptorBLL.BuscarSuscriptor(tipoDoc, nroDoc);
             if (suscriptor == null)
-            {
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No se encontro suscriptor!\\n Revisar Tipo documento y Numero documento')", true);
-                ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "swal('hola', 'succes");
+            {                
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "MyFunction", "funcionModal();", true);
+                btnBuscar.Enabled = true;
                 cboTipoDoc.Focus();
                 return suscriptor;
             }
@@ -65,7 +67,8 @@ namespace Encode
         {
             if (cboTipoDoc.SelectedIndex.Equals(0) || txtDocumento.Text.Equals(""))
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Debe completar Tipo y Numero de Documento del suscriptor')", true);
+                /*ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Debe completar Tipo y Numero de Documento del suscriptor')", true);*/
+                ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Atencion!', 'Debe completar Tipo y Numero de Documento del suscriptor', 'warning') </script>");
             }
             else
             {
@@ -74,15 +77,17 @@ namespace Encode
                    {
                     SuscripcionBLL suscripcion = new SuscripcionBLL();                    
                     if (suscripcion.VerificarSus(suscriptor))
-                    {
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('El suscriptor tiene una suscripción vigente.')", true);
+                    {                       
+                        ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Exito!', 'El suscriptor tiene una suscripción vigente.', 'success') </script>");
                         txtEstado.Text = "Suscripto";
                         btnRegistrarSuscripcion.Enabled = false;
                         btnNuevo.Enabled = false;
+                        btnCancelar.Enabled = true;
                     }
                     else
                     {
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No tiene Suscripcion')", true);
+                        //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No tiene Suscripcion')", true);
+                        ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Atencion!', 'No hay una suscripción vigente.', 'warning') </script>");
                         txtEstado.Text = "No Suscripto";
                         btnRegistrarSuscripcion.Enabled = true;
                         btnNuevo.Enabled = false;
@@ -91,29 +96,37 @@ namespace Encode
                 }
                 else
                    {
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No esta suscripto')", true);
-                    btnRegistrarSuscripcion.Enabled = true;
+                    //ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('holaaaaaa!', 'No esta suscripto', 'warning') </script>");
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No tiene Suscripcion')", true);
+                    btnRegistrarSuscripcion.Enabled = false;
+                    LimpiarDatosSuscriptor();
                    }
                 DeshabilitarCampos();
                 
             }
+            
         }
 
         protected void btnNuevo_Click(object sender, EventArgs e)
         {
             HabilitarCampos();
-            //LimpiarCampos();
+            LimpiarDatosSuscriptor();
             txtNombre.Focus();
             btnGuardar.Enabled = true;
             btnNuevo.Enabled = false;
             nuevo = true;
             ViewState["variableNuevo"] = nuevo;
             btnRegistrarSuscripcion.Enabled = false;
+            cboTipoDoc.Enabled = false;
+            txtDocumento.Enabled = false;
+            btnBuscar.Enabled = false;
+            btnCancelar.Enabled = true;
         }
 
         protected void btnModificar_Click(object sender, EventArgs e)
         {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Esta por modificar un suscriptor')", true);
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Esta por modificar un suscriptor')", true);
+            ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Atencion!', 'Esta por modificar un suscriptor!', 'info') </script>");
             cboTipoDoc.Enabled = false;
             txtDocumento.Enabled = false;
             HabilitarCampos();
@@ -122,6 +135,7 @@ namespace Encode
             txtNombreUsuario.Enabled = false;
             btnGuardar.Enabled = true;
             btnNuevo.Enabled = false;
+            btnCancelar.Enabled = true;
         }
 
         public bool Insertar(string nombre, string apellido, string numeroDocumento, string tipoDocumento, string direccion, string telefono, string email, string nombreUsuario, string pass)
@@ -166,7 +180,9 @@ namespace Encode
             if (vacio != "")
             {
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Falta completar Datos:\\n" + vacio + "')", true);
-
+                HabilitarCampos();
+                btnGuardar.Enabled = true;
+                btnCancelar.Enabled = true;
             }
             else
             {
@@ -179,11 +195,16 @@ namespace Encode
                         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Este nombre de usuario ya existe!')", true);
                         HabilitarCampos();
                         btnGuardar.Enabled = true;
+                        btnCancelar.Enabled = true;
+                        //btnBuscar.Enabled = false;
                     }
                     else
                     {
                         Insertar(txtNombre.Text, txtApellido.Text, txtDocumento.Text, cboTipoDoc.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtNombreUsuario.Text, txtContrasenia.Text);
                         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Datos cargados con exito!')", true);
+                        btnGuardar.Enabled = true;
+                        btnCancelar.Enabled = true;
+                        btnRegistrarSuscripcion.Enabled = true;
                     }
                 }
                 else
@@ -191,6 +212,9 @@ namespace Encode
                     Modificar(txtNombre.Text, txtApellido.Text, txtDocumento.Text, txtDireccion.Text, txtTelefono.Text, txtEmail.Text, txtContrasenia.Text);
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Modificacion con exito!')", true);
                     DeshabilitarCampos();
+                    btnGuardar.Enabled = true;
+                    btnCancelar.Enabled = true;
+                    btnRegistrarSuscripcion.Enabled = true;
                 }
             }
         }
@@ -202,7 +226,8 @@ namespace Encode
             cboTipoDoc.Focus();
             cboTipoDoc.Enabled = true;
             cboTipoDoc.SelectedItem.Equals(0);
-            HabilitarCampos();
+            DeshabilitarCampos();
+            btnBuscar.Enabled = true;
         }
 
         public Suscripcion RegistrarSuscripcion()
@@ -249,6 +274,17 @@ namespace Encode
         {
             cboTipoDoc.SelectedIndex = 0;
             txtDocumento.Text = "";
+            txtNombre.Text = "";
+            txtApellido.Text = "";
+            txtDireccion.Text = "";
+            txtEmail.Text = "";
+            txtTelefono.Text = "";
+            txtNombreUsuario.Text = "";
+            txtContrasenia.Text = "";
+        }
+
+        public void LimpiarDatosSuscriptor()
+        {            
             txtNombre.Text = "";
             txtApellido.Text = "";
             txtDireccion.Text = "";
