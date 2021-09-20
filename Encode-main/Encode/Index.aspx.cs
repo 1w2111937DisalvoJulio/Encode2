@@ -33,7 +33,8 @@ namespace Encode
         {
             Suscriptor suscriptor = suscriptorBLL.BuscarSuscriptor(tipoDoc, nroDoc);
             if (suscriptor == null)
-            {                
+            {    
+                //FUNCION MODAL
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "MyFunction", "funcionModal();", true);
                 btnBuscar.Enabled = true;
                 cboTipoDoc.Focus();
@@ -223,10 +224,10 @@ namespace Encode
         {
             LimpiarCampos();
             txtDocumento.Enabled = true;
-            cboTipoDoc.Focus();
             cboTipoDoc.Enabled = true;
-            cboTipoDoc.SelectedItem.Equals(0);
+            cboTipoDoc.Focus();
             DeshabilitarCampos();
+            cboTipoDoc.SelectedItem.Equals(0);
             btnBuscar.Enabled = true;
         }
 
@@ -242,7 +243,10 @@ namespace Encode
         protected void btnRegistrarSuscripcion_Click(object sender, EventArgs e)
         {
             RegistrarSuscripcion();
+            //ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Hecho!', 'Suscripcion realizada con exito!', 'success') </script>");
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Suscripcion realizada con exito!')", true);
+            LimpiarCampos();
+            cboTipoDoc.Focus();            
 
         }
 
@@ -346,8 +350,9 @@ namespace Encode
             return faltanDatos;
         }
 
-        
-
-
+        protected void btnBajaSuscripcion_Click(object sender, EventArgs e)
+        {
+            //BAJA SUSCRIPCION
+        }
     }
 }

@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\StyleSheet1.css" />
     <Content Include="Index.aspx" />
     <Content Include="js\JavaScript.js" />
     <Content Include="Login.aspx" />

@@ -7,18 +7,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous"/>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="js/JavaScript.js"></script>
+    <script src="js/JavaScript.js"></script>       
+    <link href="css/StyleSheet1.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
     <title></title>
 </head>
 <body>
-    <form class="container-fluid" id="form1" runat="server">
+    <form class="container" id="formulario" runat="server">
         <h1>Suscripcion</h1>
         <h6>Para realizar la suscripcion complete los siguientes datos</h6>
         <h3>Buscar Suscriptor</h3>
         <%-----------------------BUSCAR-------------------------------------%>
-        <div class="form-row align-items-center">
-            <div class="col">
-                <label for="validationCustom01">Tipo Documento</label>
+        <div class="row" <%--class="form-row align-items-center"--%>>
+            <div class="col-5">
+                <label for="">Tipo Documento</label>
                 <asp:DropDownList ID="cboTipoDoc" runat="server" CssClass="form-control">
                           <asp:ListItem Text="Seleccione un tipo de documento..."/>
                           <asp:ListItem Text="DNI"/>
@@ -26,115 +29,150 @@
                           <asp:ListItem Text="PASAPORTE"/>
                 </asp:DropDownList>
             </div>
-            <div class="col">
-                <label for="validationCustom01">Numero de Documento</label>
-                <label class="sr-only" for="inlineFormInputGroup">Username</label>
-                <div class="input-group">
-                    <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="123456">--%>
-                    <asp:TextBox runat="server" CssClass="form-control" ID="txtDocumento" placeholder="Numero documento"/>                    
-                </div>
+            <div class="col-5">
+                <label for="">Numero de Documento</label>                            
+                  <asp:TextBox runat="server" CssClass="form-control" ID="txtDocumento" placeholder="Numero documento"/>                                  
             </div>
-            <div class="col">
+            <div class="col-2">
                 <%--<button type="submit" class="btn btn-success mt-4 btn-lg">Buscar</button>--%>
-                <asp:Button runat="server" ID="btnBuscar" CssClass="btn btn-success mt-4 btn-lg" Text="Buscar" OnClick="btnBuscar_Click"/>
+                <asp:Button runat="server" ID="btnBuscar" CssClass="btn btn-success mt-4 btn-lg" Text="Buscar" OnClick="btnBuscar_Click" UseSubmitBehavior="False"/>
             </div>
         </div>
         <%-------------------------NUEVO-----------------------------------%>
         <h3>Datos del Suscriptor</h3>
-        <div class="form-row align-items-center">
-            <div class="col">
-                <label for="validationCustom01">Nombre</label>
-                <label class="sr-only" for="inlineFormInput">Name</label>
-                <%--<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Juan">--%>
-                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtNombre" placeholder="Nombre"/>
+        <div class="row" <%--form-row align-items-center"--%>>
+            <div class="col-5">
+                <label for="">Nombre</label>                
+                <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtNombre" placeholder="Nombre" Font-Names=""/>
+               </div>
+            <div class="col-5">
+                <label for="">Apellido</label>                                 
+                    <asp:TextBox runat="server" CssClass="form-control" ID="txtApellido" placeholder="Apellido"/>              
             </div>
-            <div class="col">
-                <label for="validationCustom01">Apellido</label>
-                <label class="sr-only" for="inlineFormInputGroup">Username</label>
-                <div class="input-group mb-2">
-                    <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Perez">--%>
-                    <asp:TextBox runat="server" CssClass="form-control" ID="txtApellido" placeholder="Apellido"/>
-                </div>
-            </div>
-            <div class="col">
-                <%--<button type="submit" class="btn btn-info mt-4 btn-lg">Nuevo</button>--%>
+            <div class="col-2">                
                 <asp:Button runat="server" ID="btnNuevo" CssClass="btn btn-success mt-4 btn-lg" Text="Nuevo" OnClick="btnNuevo_Click"/>
             </div>
         </div>
         <%--------------------------MODIFICAR----------------------------------%>
         
-        <div class="form-row align-items-center">
-            <div class="col">
-                <script>
-
-                </script>
-                <label for="validationCustom01">Direccion</label>
-                <label class="sr-only" for="inlineFormInput">Name</label>
-                <%--<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Bolivar 123">--%>
+        <div class="row" <%--form-row align-items-center"--%>>
+            <div class="col-5">              
+                <label for="">Direccion</label>                              
                 <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtDireccion" placeholder="Direccion"/>
             </div>
-            <div class="col">
-                <label for="validationCustom01">Email</label>
-                <label class="sr-only" for="inlineFormInputGroup" textmodel="Email">Username</label>
-                <div class="input-group mb-2">
-                    <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="jperez@encodesa.com.ar">--%>
+            <div class="col-5">
+                <label for="">Email</label>                                 
                     <asp:TextBox runat="server" CssClass="form-control" ID="txtEmail" placeholder="@encodesa.com.ar"/>
-                </div>
-            </div>
-            <div class="col">
-                <%--<button type="submit" class="btn btn-primary mt-4 btn-lg">Modificar</button>--%>
-                <asp:Button runat="server" ID="btnModificar" CssClass="btn btn-primary mt-4 btn-lg" Text="Modificar" OnClick="btnModificar_Click"/>
+                </div>            
+            <div class="col-2">                
+                <asp:Button runat="server" ID="btnModificar" CssClass="btn btn-primary mt-4 btn-lg" Text="Modificar" OnClick="btnModificar_Click" UseSubmitBehavior="False"/>
             </div>
         </div>
+       
         <%---------------------------GUARDAR---------------------------------%>
         
-        <div class="form-row align-items-center">
-            <div class="col">
-                <label for="validationCustom01">Telefono</label>
-                <label class="sr-only" for="inlineFormInput">Name</label>
-                <%--<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="156321564">--%>
+        <div class="row" <%--form-row align-items-center"--%>>
+            <div class="col-5">
+                <label for="">Telefono</label>                
+                
                 <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtTelefono" placeholder="Telefono"/>
             </div>
-            <div class="col">
-                <label for="validationCustom01">Estado</label>
-                <label class="sr-only" for="inlineFormInputGroup">Username</label>
-                <div class="input-group mb-2">
-                    <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="No Suscripto">--%>
+            <div class="col-5">
+                <label for="">Estado</label>                                  
                     <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtEstado" placeholder="-"/>
-                </div>
-            </div>
-            <div class="col">
-                <%--<button type="submit" class="btn btn-success mt-4 btn-lg">Guardar</button>--%>
-                <asp:Button runat="server" ID="btnGuardar" CssClass="btn btn-success mt-4 btn-lg" Text="Guardar" OnClick="btnGuardar_Click"/>
+                </div>            
+            <div class="col-2">                
+                <asp:Button runat="server" ID="btnGuardar" CssClass="btn btn-success mt-4 btn-lg" Text="Guardar" OnClick="btnGuardar_Click" UseSubmitBehavior="False"/>
             </div>
         </div>
         <%----------------------------CANCELAR--------------------------------%>
-        
-        <div class="form-row align-items-center">
-            <div class="col">
-                <label for="validationCustom01">Nombre de usuario</label>
-                <label class="sr-only" for="inlineFormInput">Name</label>
-                <%--<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="jperez">--%>
+
+           <div class="row" <%--form-row align-items-center"--%>>
+            <div class="col-5">
+                <label for="">Nombre de usuario</label>                             
                 <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtNombreUsuario" placeholder="Usuario"/>
             </div>
-            <div class="col">
-                <label for="validationCustom01">Contraseña</label>
-                <label class="sr-only" for="inlineFormInputGroup">Username</label>
-                <div class="input-group mb-2">
-                    <%--<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="*******">--%>
+            <div class="col-5">
+                <label for="">Contraseña</label>                   
                     <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtContrasenia" placeholder="********" type="password"/>
-                </div>
-            </div>
-            <div class="col">
-                <%--<button type="submit" class="btn btn-warning mt-4 btn-lg">Cancelar</button>--%>
-                <asp:Button runat="server" ID="btnCancelar" CssClass="btn btn-warning mt-4 btn-lg" Text="Cancelar" OnClick="btnCancelar_Click"/>
+                </div>            
+            <div class="col-2">               
+                <asp:Button runat="server" ID="btnCancelar" CssClass="btn btn-warning mt-4 btn-lg" Text="Cancelar" OnClick="btnCancelar_Click" UseSubmitBehavior="False"/>
             </div>
         </div>
+
+        
         <%------------------------REGISTRAR SUSCRIPCION------------------------------------%>
-        <%--<button type="button" class="btn btn-success mt-5 btn-lg">Registrar Suscripcion</button>--%>
-        <asp:Button runat="server" ID="btnRegistrarSuscripcion" CssClass="btn btn-success mt-4 btn-lg" Text="Registrar Suscripcion" OnClick="btnRegistrarSuscripcion_Click"/>
+        
+        <asp:Button runat="server" ID="btnRegistrarSuscripcion" CssClass="btn btn-success mt-4 btn-lg" Text="Registrar Suscripcion" OnClick="btnRegistrarSuscripcion_Click" UseSubmitBehavior="False"/>
+        <asp:Button runat="server" ID="btnBajaSuscripcion" CssClass="btn btn-danger mt-4 btn-lg" Text="Baja Suscripcion" OnClick="btnBajaSuscripcion_Click" UseSubmitBehavior="False"/>
 
     </form>
     
 </body>
+<script>  
+    $(document).ready(function () {
+        $("#formulario").validate({
+            rules: {
+                /*cboTipoDoc: { required: true, minlength: 3, },*/
+                txtDocumento: { required: true, minlength: 6, digits: true},
+                txtNombre: { required: true, minlength: 3, },
+                txtApellido: { required: true, minlength: 3 },
+                txtDireccion: { required: true, minlength: 4 },
+                txtEmail: { required: true, email: true },
+                txtTelefono: { required: true, minlength: 4 },
+                /*txtEstado: { required: true, minlength: 4 },*/
+                txtNombreUsuario: { required: true, minlength: 4 },
+                txtContrasenia: { required: true, minlength: 4 },
+            },
+            messages: {
+                //cboTipoDoc: {
+                //    required: 'Por favor ingrese su nombre',
+                //    minlength: 'Debe ingresar un minimo de 3 caracteres'
+                //},
+                txtDocumento: {
+                    required: 'Ingrese numero de documento',
+                    minlength: 'Debe ingresar un minimo de 3 caracteres',
+                    digits: 'Debe Ingresar solo numeros'
+                },
+                txtNombre: {
+                    required: 'Ingrese Nombre',
+                    minlength: 'Debe ingresar un minimo de 3 caracteres'
+                },
+                txtApellido: {
+                    required: 'Ingrese Apellido',
+                    minlength: 'Debe ingresar un minimo de 3 caracteres'
+                },
+                txtDireccion: {
+                    required: 'Ingrese una dirección',
+                    minlength: 'Debe ingresar un minimo de 4 caracteres'
+                },
+                txtEmail: {
+                    required: 'Ingresar una direccion de email',
+                    email: 'Debe ingresar un email valido'
+                },
+                txtTelefono: {
+                    required: 'Ingrese numero de telefono',
+                    minlength: 'Debe ingresar un minimo de 4 caracteres'
+                },
+                //txtEstado: {
+                //    required: 'Ingrese una contraseña',
+                //    minlength: 'Debe ingresar un minimo de 4 caracteres'
+                //},
+                txtNombreUsuario: {
+                    required: 'Ingrese nombre de usuario',
+                    minlength: 'Debe ingresar un minimo de 4 caracteres'
+                },
+                txtContrasenia: {
+                    required: 'Ingrese una contraseña',
+                    minlength: 'Debe ingresar un minimo de 4 caracteres'
+                }
+            }
+        });
+    });
+</script>
 </html>
+
+
+
+
