@@ -27,6 +27,7 @@ namespace Encode
             btnGuardar.Enabled = false;
             btnCancelar.Enabled = false;
             btnNuevo.Enabled = false;
+            btnBajaSuscripcion.Enabled = false;
         }
 
         public Suscriptor BuscarSuscriptor(string tipoDoc, string nroDoc)
@@ -83,7 +84,10 @@ namespace Encode
                         txtEstado.Text = "Suscripto";
                         btnRegistrarSuscripcion.Enabled = false;
                         btnNuevo.Enabled = false;
-                        btnCancelar.Enabled = true;
+                        btnCancelar.Enabled = false;
+
+                        //activar boton BAJA DE SUSCRIPTOR
+                        btnBajaSuscripcion.Enabled = true;
                     }
                     else
                     {
@@ -100,6 +104,7 @@ namespace Encode
                     //ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('holaaaaaa!', 'No esta suscripto', 'warning') </script>");
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No tiene Suscripcion')", true);
                     btnRegistrarSuscripcion.Enabled = false;
+
                     LimpiarDatosSuscriptor();
                    }
                 DeshabilitarCampos();
@@ -250,7 +255,26 @@ namespace Encode
 
         }
 
+        public bool BajaSuscripcion()
+        {
+            int idEliminar = Convert.ToInt32((ViewState["idSuscriptor"]).ToString());
+            Suscriptor suscriptor = new Suscriptor();
+            suscriptor.IdSuscriptor = idEliminar;
+            
+            //Suscripcion suscripcion = new Suscripcion();
+            SuscripcionBLL suscripcionBLL = new SuscripcionBLL();
+            return suscripcionBLL.BajaSuscripcion(suscriptor);
+            
+        }
 
+        protected void btnBajaSuscripcion_Click(object sender, EventArgs e)
+        {
+            //BAJA SUSCRIPCION
+            BajaSuscripcion();
+            ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Exito!', 'Se elimino la suscripcion!', 'info') </script>");
+            LimpiarCampos();
+            cboTipoDoc.Focus();
+        }
 
         public void DeshabilitarCampos()
         {
@@ -350,9 +374,6 @@ namespace Encode
             return faltanDatos;
         }
 
-        protected void btnBajaSuscripcion_Click(object sender, EventArgs e)
-        {
-            //BAJA SUSCRIPCION
-        }
+        
     }
 }

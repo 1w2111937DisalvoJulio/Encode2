@@ -41,7 +41,7 @@ namespace DAL
         }
 
         //VERIFICAR SUSCRIPCION
-        public  bool VerificarSuscripcion(Suscriptor suscriptor)
+        public bool VerificarSuscripcion(Suscriptor suscriptor)
         {
             try
             {
@@ -73,6 +73,35 @@ namespace DAL
                 conexion.CerrarConexion();
             }
         }
+
+        //BAJA SUSCRIPCION 
+        public bool BajaSuscripcion(Suscriptor suscriptor)
+        {
+            Suscripcion suscripcion = new Suscripcion();
+            if(VerificarSuscripcion(suscriptor))
+            {
+                string procedure = "sp_BajaSuscripcion";
+                comando.Connection = conexion.AbrirConexion();
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.CommandText = procedure;
+                comando.Parameters.Clear();
+                comando.Parameters.AddWithValue("@IdSuscriptor", suscriptor.IdSuscriptor);
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            else
+            {
+                conexion.CerrarConexion();
+                return false;
+                
+            }
+            //finally
+            //{
+                
+            //}
+        }
+
 
 
     }

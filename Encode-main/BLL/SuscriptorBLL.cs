@@ -11,9 +11,7 @@ namespace BLL
 {
     public class SuscriptorBLL
     {
-        public SuscriptorDAL nuevo = new SuscriptorDAL();
-        
-
+        public SuscriptorDAL nuevo = new SuscriptorDAL();       
 
         public bool Insertar(Suscriptor suscriptor)
         {

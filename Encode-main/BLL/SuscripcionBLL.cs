@@ -21,6 +21,10 @@ namespace BLL
             return nuevo.VerificarSuscripcion(suscriptor);
         }
 
+        public bool BajaSuscripcion(Suscriptor suscriptor)
+        {
+            return nuevo.BajaSuscripcion(suscriptor);
+        }
 
     }
 }
