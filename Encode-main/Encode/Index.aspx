@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous"/>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <%--<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>--%>
     <script src="js/JavaScript.js"></script>     
     <link href="css/StyleSheet1.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -31,11 +32,11 @@
             </div>
             <div class="col-5">
                 <label for="">Numero de Documento</label>                            
-                  <asp:TextBox runat="server" CssClass="form-control" ID="txtDocumento" placeholder="Numero documento"/>                                  
+                  <asp:TextBox runat="server" CssClass="form-control inputNumDoc" ID="txtDocumento" placeholder="Numero documento"/>                                  
             </div>
             <div class="col-2">
                 <%--<button type="submit" class="btn btn-success mt-4 btn-lg">Buscar</button>--%>
-                <asp:Button runat="server" ID="btnBuscar" CssClass="btn btn-success mt-4 btn-lg" Text="Buscar" OnClick="btnBuscar_Click" UseSubmitBehavior="False"/>
+                <asp:Button runat="server" ID="btnBuscar" CssClass="btn btn-success mt-4 btn-lg" Text="Buscar" OnClick="btnBuscar_Click" UseSubmitBehavior="true"/>
             </div>
         </div>
         <%-------------------------NUEVO-----------------------------------%>
@@ -82,7 +83,7 @@
                     <asp:TextBox runat="server" CssClass="form-control mb-2" ID="txtEstado" placeholder="-"/>
                 </div>            
             <div class="col-2">                
-                <asp:Button runat="server" ID="btnGuardar" CssClass="btn btn-success mt-4 btn-lg" Text="Guardar" OnClick="btnGuardar_Click" UseSubmitBehavior="False"/>
+                <asp:Button runat="server" ID="btnGuardar" CssClass="btn btn-success mt-4 btn-lg" Text="Guardar" OnClick="btnGuardar_Click" UseSubmitBehavior="true"/>
             </div>
         </div>
         <%----------------------------CANCELAR--------------------------------%>
@@ -171,7 +172,66 @@
                 }
             }
         });
+        /*validarDocumento();*/
     });
+
+    //$("#btnGuardar").click(function () {
+    //    if($("#formulario").valid() == false) {
+    //        return;
+
+    //    }
+        //let cboTipoDoc = ("#cboTipoDoc").val()
+        /*let documento = $("#txtDocumento").val()*/
+        //let nombre = $("txtNombre").val()
+        //let apellido = $("txtApellido").val()
+        //let direccion = $("txtDireccion").val()
+        //let email = $("txtEmail").val()
+        //let telefono = $("txtTelefono").val()
+        //let nombreUsu = $("txtNombreUsuario").val()
+        //let contrasenia = $("txtContrasenia").val()        
+   // })
+
+    //var inputNumDoc = document.querySelector('.inputNumDoc');
+    //$('inputNumDoc').keeypress( 
+    //    console.log("btn click");
+    //    validarDocumento();
+    //)
+    //    .addEventListener('keeypress', (e) => {
+    //    //e.preventDefault();
+       
+    //});
+
+
+    //function validarDocumento() {    
+    //    var tipoDoc = document.getElementById('cboTipoDoc').value
+       <%-- var documento = document.getElementById('<%=txtDocumento.ClientID%>').innerText--%>
+        //if (tipoDoc == "Seleccione un tipo de documento...") {
+        //    //swal
+        //    console.log("holaaaaaaaaaaaa")
+        //    /*alerta("tipo invalido", "seleccionar tipo documento")*/
+        //    //return false;
+        //}
+
+        //if (tipoDoc == 1 || tipoDoc == 2) {
+        //    var regex = /^\d+$/;
+        //    if (!regex.test(documento)) {
+        //        //swal
+        //        console.log("holaaaaaaaaaaaa")
+
+        //        return false;
+        //    }
+        //}
+        //else (tipoDoc == 3)
+        //{
+        //    var regex = /^[a-z]{3}[0-9]{6}[a-z]?$/i;
+        //    if (!regex.test(documento)) {
+        //        //swal
+        //        return false;
+        //    }
+        //}
+        //return "holaaaa"
+  //  }
+
 </script>
 </html>
 

@@ -20,6 +20,8 @@ namespace Encode
         bool nuevo = true;
         protected void Page_Load(object sender, EventArgs e)
         {
+            //if (!IsPostBack)
+            //{ }
             txtEstado.Enabled = false;
             DeshabilitarCampos();
             btnModificar.Enabled = false;

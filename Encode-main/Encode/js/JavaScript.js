@@ -23,3 +23,11 @@
             }
         });
 }
+
+function alerta(titulo, mensaje) {
+    Swal.Fire({
+        title: titulo,
+        text: mensaje,
+        icon: "warning"
+    })
+}
