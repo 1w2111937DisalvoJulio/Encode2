@@ -14,8 +14,7 @@ namespace DAL
         private Conexion conexion = new Conexion();
         SqlDataReader leer = null;
         DataTable tabla = new DataTable();
-        SqlCommand comando = new SqlCommand();
-        //EncryptKeys encryptar = new EncryptKeys();
+        SqlCommand comando = new SqlCommand();        
 
         public Suscriptor BuscarSuscriptor(string tipoDoc, string nroDoc)
         {
@@ -132,6 +131,7 @@ namespace DAL
                 comando.Parameters.AddWithValue("@telefono", suscriptor.NroTelefono); comando.Parameters.AddWithValue("@email", suscriptor.Email);
                 comando.Parameters.AddWithValue("@pass", suscriptor.Contrasenia);
                 comando.ExecuteNonQuery();
+                //ExecuteNonQuery: consultar estructura o crear objetos.
                 comando.Parameters.Clear();
 
                 return true;
@@ -154,8 +154,8 @@ namespace DAL
                                      "from Suscriptor" +
                                      " where NombreUsuario = '{0}'", nomUsu);
                 resultado = (int)comando.ExecuteScalar();
-                return resultado;
-                
+                //ExecuteScalar: devuelve el primer dato si encuentra y sino 0.
+                return resultado;                
             }
 
             catch (Exception e)

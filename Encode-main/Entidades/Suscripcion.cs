@@ -11,7 +11,7 @@ namespace Entidades
         private int idAsociacion;
         private int idSuscriptor;
         private DateTime fechaAlta;
-        private DateTime fechaFin;
+        private Nullable <DateTime> fechaFin;
         private string motivoFin;
 
         public Suscripcion()
@@ -30,11 +30,8 @@ namespace Entidades
         public int IdAsociacion { get => idAsociacion; set => idAsociacion = value; }
         public int IdSuscriptor { get => idSuscriptor; set => idSuscriptor = value; }
         public DateTime FechaAlta { get => fechaAlta; set => fechaAlta = value; }
-        public DateTime FechaFin { get => fechaFin; set => fechaFin = value; }
+        public DateTime? FechaFin { get => fechaFin; set => fechaFin = value; }
         public string MotivoFin { get => motivoFin; set => motivoFin = value; }
-
-
-
 
     }
 }

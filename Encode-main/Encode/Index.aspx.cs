@@ -15,13 +15,11 @@ namespace Encode
     public partial class Index : System.Web.UI.Page
     {
         SuscriptorBLL suscriptorBLL = new SuscriptorBLL();
-       
+
         int id = 0;
         bool nuevo = true;
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!IsPostBack)
-            //{ }
             txtEstado.Enabled = false;
             DeshabilitarCampos();
             btnModificar.Enabled = false;
@@ -36,7 +34,7 @@ namespace Encode
         {
             Suscriptor suscriptor = suscriptorBLL.BuscarSuscriptor(tipoDoc, nroDoc);
             if (suscriptor == null)
-            {    
+            {
                 //FUNCION MODAL
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "MyFunction", "funcionModal();", true);
                 btnBuscar.Enabled = true;
@@ -47,7 +45,7 @@ namespace Encode
             if (tipoDoc == suscriptor.TipoDocumento && nroDoc == suscriptor.NumeroDocumento)
             {
                 id = suscriptor.IdSuscriptor;
-                ViewState["idSuscriptor"] = id;
+                ViewState["idSuscriptor"] = id;//variable de permanencia de datos
                 txtNombre.Text = suscriptor.NombreSuscriptor;
                 txtApellido.Text = suscriptor.ApellidoSuscriptor;
                 txtDireccion.Text = suscriptor.Direccion;
@@ -78,41 +76,48 @@ namespace Encode
             {
                 Suscriptor suscriptor = BuscarSuscriptor(cboTipoDoc.SelectedValue, txtDocumento.Text);
                 if (suscriptor != null)
-                   {
-                    SuscripcionBLL suscripcion = new SuscripcionBLL();                    
+                {
+                    SuscripcionBLL suscripcion = new SuscripcionBLL();
+                    Suscripcion sus = new Suscripcion();
                     if (suscripcion.VerificarSus(suscriptor))
-                    {                       
-                        ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Exito!', 'El suscriptor tiene una suscripción vigente.', 'success') </script>");
-                        txtEstado.Text = "Suscripto";
-                        btnRegistrarSuscripcion.Enabled = false;
-                        btnNuevo.Enabled = false;
-                        btnCancelar.Enabled = false;
+                    {
+                        if (suscripcion.VerificarFecha(suscriptor))
+                        {
+                            ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Exito!', 'El suscriptor tiene una suscripción vigente.', 'success') </script>");
+                            txtEstado.Text = "Suscripto";
+                            btnRegistrarSuscripcion.Enabled = false;
+                            btnNuevo.Enabled = false;
+                            btnCancelar.Enabled = false;
 
-                        //activar boton BAJA DE SUSCRIPTOR
-                        btnBajaSuscripcion.Enabled = true;
+                            //activar boton BAJA DE SUSCRIPTOR
+                            btnBajaSuscripcion.Enabled = true;
+
+                        }
+                        else
+                        {
+                            ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Atencion!', 'No hay una suscripción vigente.', 'warning') </script>");
+                            txtEstado.Text = "No suscripto";
+                            btnRegistrarSuscripcion.Enabled = true;
+                            btnNuevo.Enabled = false;
+                        }                        
+                       
                     }
                     else
                     {
-                        //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No tiene Suscripcion')", true);
-                        ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Atencion!', 'No hay una suscripción vigente.', 'warning') </script>");
-                        txtEstado.Text = "No Suscripto";
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No tiene Suscripcion')", true);
                         btnRegistrarSuscripcion.Enabled = true;
-                        btnNuevo.Enabled = false;
-                    }                   
-                    
+                    }
                 }
                 else
-                   {
-                    //ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('holaaaaaa!', 'No esta suscripto', 'warning') </script>");
+                {                  
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No tiene Suscripcion')", true);
                     btnRegistrarSuscripcion.Enabled = false;
 
                     LimpiarDatosSuscriptor();
-                   }
+                }
                 DeshabilitarCampos();
-                
             }
-            
+
         }
 
         protected void btnNuevo_Click(object sender, EventArgs e)
@@ -139,7 +144,7 @@ namespace Encode
             txtDocumento.Enabled = false;
             HabilitarCampos();
             nuevo = false;
-            ViewState["variableNuevo"] = nuevo;
+            ViewState["variableNuevo"] = nuevo;//variable para permanencia de datos
             txtNombreUsuario.Enabled = false;
             btnGuardar.Enabled = true;
             btnNuevo.Enabled = false;
@@ -174,7 +179,6 @@ namespace Encode
             suscriptor.Direccion = direccion;
             suscriptor.NroTelefono = telefono;
             suscriptor.Email = email;
-            
             suscriptor.Contrasenia = pass;
             return suscriptorBLL.ModificarSuscriptor(suscriptor);
 
@@ -183,7 +187,7 @@ namespace Encode
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-            
+
             string vacio = CamposVacios();
             if (vacio != "")
             {
@@ -198,7 +202,7 @@ namespace Encode
                 //almacena los datos sin enviar el formulario
                 if (nuevo)
                 {
-                    if (suscriptorBLL.ValidarNombreUsuario(txtNombreUsuario.Text)>0)
+                    if (suscriptorBLL.ValidarNombreUsuario(txtNombreUsuario.Text) > 0)
                     {
                         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Este nombre de usuario ya existe!')", true);
                         HabilitarCampos();
@@ -252,21 +256,24 @@ namespace Encode
             RegistrarSuscripcion();
             //ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Hecho!', 'Suscripcion realizada con exito!', 'success') </script>");
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Suscripcion realizada con exito!')", true);
-            LimpiarCampos();
-            cboTipoDoc.Focus();            
+            cboTipoDoc.Enabled = true;
+            txtDocumento.Enabled = true;
+            cboTipoDoc.Focus();
+            txtEstado.Text = "Suscripto";
+            btnBuscar.Enabled = true;
 
         }
 
-        public bool BajaSuscripcion()
+        public Suscripcion BajaSuscripcion()
         {
             int idEliminar = Convert.ToInt32((ViewState["idSuscriptor"]).ToString());
             Suscriptor suscriptor = new Suscriptor();
             suscriptor.IdSuscriptor = idEliminar;
-            
             //Suscripcion suscripcion = new Suscripcion();
             SuscripcionBLL suscripcionBLL = new SuscripcionBLL();
+
             return suscripcionBLL.BajaSuscripcion(suscriptor);
-            
+
         }
 
         protected void btnBajaSuscripcion_Click(object sender, EventArgs e)
@@ -274,8 +281,11 @@ namespace Encode
             //BAJA SUSCRIPCION
             BajaSuscripcion();
             ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Exito!', 'Se elimino la suscripcion!', 'info') </script>");
-            LimpiarCampos();
+            cboTipoDoc.Enabled = true;
+            txtDocumento.Enabled = true;
             cboTipoDoc.Focus();
+            txtEstado.Text = "No suscripto";
+
         }
 
         public void DeshabilitarCampos()
@@ -309,12 +319,13 @@ namespace Encode
             txtDireccion.Text = "";
             txtEmail.Text = "";
             txtTelefono.Text = "";
+            txtEstado.Text = "-";
             txtNombreUsuario.Text = "";
             txtContrasenia.Text = "";
         }
 
         public void LimpiarDatosSuscriptor()
-        {            
+        {
             txtNombre.Text = "";
             txtApellido.Text = "";
             txtDireccion.Text = "";
@@ -376,6 +387,6 @@ namespace Encode
             return faltanDatos;
         }
 
-        
+
     }
 }

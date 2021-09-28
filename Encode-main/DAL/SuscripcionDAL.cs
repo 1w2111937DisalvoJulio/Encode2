@@ -50,7 +50,7 @@ namespace DAL
                 comando.CommandType = CommandType.StoredProcedure;
                 comando.CommandText = procedure;
                 comando.Parameters.Clear();
-                comando.Parameters.AddWithValue("@IdSuscriptor", suscriptor.IdSuscriptor);
+                comando.Parameters.AddWithValue("@IdSuscriptor", suscriptor.IdSuscriptor);             
                 comando.ExecuteNonQuery();
                 leer = comando.ExecuteReader();
 
@@ -75,7 +75,7 @@ namespace DAL
         }
 
         //BAJA SUSCRIPCION 
-        public bool BajaSuscripcion(Suscriptor suscriptor)
+        public Suscripcion BajaSuscripcion(Suscriptor suscriptor)
         {
             Suscripcion suscripcion = new Suscripcion();
             if(VerificarSuscripcion(suscriptor))
@@ -88,18 +88,53 @@ namespace DAL
                 comando.Parameters.AddWithValue("@IdSuscriptor", suscriptor.IdSuscriptor);
                 comando.ExecuteNonQuery();
 
-                return true;
+                return suscripcion;
             }
             else
             {
                 conexion.CerrarConexion();
-                return false;
+                return null;
                 
             }
-            //finally
-            //{
-                
-            //}
+           
+        }
+
+        //VERIFICAR FECHA
+        public bool VerificarFecha(Suscriptor suscriptor)
+        {
+            try
+            {
+                if (VerificarSuscripcion(suscriptor)) 
+                {
+                    string procedure = "sp_VerificarFecha";
+                    comando.Connection = conexion.AbrirConexion();
+                    comando.CommandType = CommandType.StoredProcedure;
+                    comando.CommandText = procedure;
+                    comando.Parameters.Clear();
+                    comando.Parameters.AddWithValue("@IdSuscriptor", suscriptor.IdSuscriptor);
+                    comando.ExecuteNonQuery();
+                    leer = comando.ExecuteReader();
+
+                    if (leer.Read())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
+
+            }
+            catch (Exception)
+            {
+                return false ;
+            }
+            finally
+            {
+                conexion.CerrarConexion();
+            }
         }
 
 

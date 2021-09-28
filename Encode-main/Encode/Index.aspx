@@ -172,7 +172,7 @@
                 }
             }
         });
-        /*validarDocumento();*/
+       
     });
 
     //$("#btnGuardar").click(function () {
@@ -228,8 +228,7 @@
         //        //swal
         //        return false;
         //    }
-        //}
-        //return "holaaaa"
+        //}        
   //  }
 
 </script>
