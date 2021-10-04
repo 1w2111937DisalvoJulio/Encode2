@@ -31,5 +31,10 @@ namespace BLL
             return nuevo.VerificarFecha(suscriptor);
         }
 
+        public Suscripcion ActualizarSuscripcion(Suscriptor suscriptor)
+        {
+            return nuevo.ActualizarSuscripcion(suscriptor);
+        }
+
     }
 }

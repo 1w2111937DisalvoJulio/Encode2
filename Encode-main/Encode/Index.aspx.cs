@@ -68,8 +68,7 @@ namespace Encode
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
             if (cboTipoDoc.SelectedIndex.Equals(0) || txtDocumento.Text.Equals(""))
-            {
-                /*ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Debe completar Tipo y Numero de Documento del suscriptor')", true);*/
+            {               
                 ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Atencion!', 'Debe completar Tipo y Numero de Documento del suscriptor', 'warning') </script>");
             }
             else
@@ -134,6 +133,7 @@ namespace Encode
             txtDocumento.Enabled = false;
             btnBuscar.Enabled = false;
             btnCancelar.Enabled = true;
+            txtEstado.Text = "";
         }
 
         protected void btnModificar_Click(object sender, EventArgs e)
@@ -242,19 +242,27 @@ namespace Encode
             btnBuscar.Enabled = true;
         }
 
+        //REGISTRAR SUSCRIPCION O ACTUALIZAR SUSCRIPCION
         public Suscripcion RegistrarSuscripcion()
         {
             Suscriptor suscriptor = suscriptorBLL.BuscarSuscriptor(cboTipoDoc.SelectedValue, txtDocumento.Text);
             Suscripcion suscripcion = new Suscripcion();
             SuscripcionBLL suscripcionBLL = new SuscripcionBLL();
-            suscripcion.IdSuscriptor = suscriptor.IdSuscriptor;
-            return suscripcionBLL.RegistrarSuscripcion(suscriptor);
+            suscripcion.IdSuscriptor = suscriptor.IdSuscriptor;          
+            
+            if (!suscripcionBLL.VerificarSus(suscriptor))
+            {
+               return suscripcionBLL.RegistrarSuscripcion(suscriptor);
+            }
+            else
+            {
+                return suscripcionBLL.ActualizarSuscripcion(suscriptor);
+            }
         }
 
         protected void btnRegistrarSuscripcion_Click(object sender, EventArgs e)
         {
-            RegistrarSuscripcion();
-            //ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Hecho!', 'Suscripcion realizada con exito!', 'success') </script>");
+            RegistrarSuscripcion();           
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Suscripcion realizada con exito!')", true);
             cboTipoDoc.Enabled = true;
             txtDocumento.Enabled = true;
@@ -271,9 +279,15 @@ namespace Encode
             suscriptor.IdSuscriptor = idEliminar;
             //Suscripcion suscripcion = new Suscripcion();
             SuscripcionBLL suscripcionBLL = new SuscripcionBLL();
-
-            return suscripcionBLL.BajaSuscripcion(suscriptor);
-
+            if (suscripcionBLL.VerificarSus(suscriptor))
+            {
+                return suscripcionBLL.BajaSuscripcion(suscriptor);
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         protected void btnBajaSuscripcion_Click(object sender, EventArgs e)
