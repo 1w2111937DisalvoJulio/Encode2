@@ -68,7 +68,7 @@ namespace Encode
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
             if (cboTipoDoc.SelectedIndex.Equals(0) || txtDocumento.Text.Equals(""))
-            {               
+            {
                 ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Atencion!', 'Debe completar Tipo y Numero de Documento del suscriptor', 'warning') </script>");
             }
             else
@@ -98,21 +98,22 @@ namespace Encode
                             txtEstado.Text = "No suscripto";
                             btnRegistrarSuscripcion.Enabled = true;
                             btnNuevo.Enabled = false;
-                        }                        
-                       
+                        }
+
                     }
                     else
                     {
                         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No tiene Suscripcion')", true);
                         btnRegistrarSuscripcion.Enabled = true;
+                        txtEstado.Text = "No suscripto";
                     }
                 }
                 else
-                {                  
+                {
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('No tiene Suscripcion')", true);
                     btnRegistrarSuscripcion.Enabled = false;
-
                     LimpiarDatosSuscriptor();
+                    txtEstado.Text = "No suscripto";
                 }
                 DeshabilitarCampos();
             }
@@ -138,7 +139,6 @@ namespace Encode
 
         protected void btnModificar_Click(object sender, EventArgs e)
         {
-            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Esta por modificar un suscriptor')", true);
             ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> swal('Atencion!', 'Esta por modificar un suscriptor!', 'info') </script>");
             cboTipoDoc.Enabled = false;
             txtDocumento.Enabled = false;
@@ -208,7 +208,6 @@ namespace Encode
                         HabilitarCampos();
                         btnGuardar.Enabled = true;
                         btnCancelar.Enabled = true;
-                        //btnBuscar.Enabled = false;
                     }
                     else
                     {
@@ -248,11 +247,11 @@ namespace Encode
             Suscriptor suscriptor = suscriptorBLL.BuscarSuscriptor(cboTipoDoc.SelectedValue, txtDocumento.Text);
             Suscripcion suscripcion = new Suscripcion();
             SuscripcionBLL suscripcionBLL = new SuscripcionBLL();
-            suscripcion.IdSuscriptor = suscriptor.IdSuscriptor;          
-            
+            suscripcion.IdSuscriptor = suscriptor.IdSuscriptor;
+
             if (!suscripcionBLL.VerificarSus(suscriptor))
             {
-               return suscripcionBLL.RegistrarSuscripcion(suscriptor);
+                return suscripcionBLL.RegistrarSuscripcion(suscriptor);
             }
             else
             {
@@ -262,7 +261,7 @@ namespace Encode
 
         protected void btnRegistrarSuscripcion_Click(object sender, EventArgs e)
         {
-            RegistrarSuscripcion();           
+            RegistrarSuscripcion();
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "swal('Suscripcion realizada con exito!')", true);
             cboTipoDoc.Enabled = true;
             txtDocumento.Enabled = true;
@@ -287,7 +286,7 @@ namespace Encode
             {
                 return null;
             }
-            
+
         }
 
         protected void btnBajaSuscripcion_Click(object sender, EventArgs e)

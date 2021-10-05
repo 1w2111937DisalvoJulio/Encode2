@@ -34,9 +34,9 @@ namespace DAL
 
                 return suscripcion;
             }
-            catch(Exception)
+            catch (Exception)
             {
-                throw;                
+                throw;
             }
             finally
             {
@@ -94,7 +94,7 @@ namespace DAL
                 conexion.CerrarConexion();
                 return suscripcion;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
@@ -109,27 +109,23 @@ namespace DAL
         {
             try
             {
-                if (VerificarSuscripcion(suscriptor))
-                {
-                    string procedure = "sp_VerificarFecha";
-                    comando.Connection = conexion.AbrirConexion();
-                    comando.CommandType = CommandType.StoredProcedure;
-                    comando.CommandText = procedure;
-                    comando.Parameters.Clear();
-                    comando.Parameters.AddWithValue("@IdSuscriptor", suscriptor.IdSuscriptor);
-                    comando.ExecuteNonQuery();
-                    leer = comando.ExecuteReader();
+                string procedure = "sp_VerificarFecha";
+                comando.Connection = conexion.AbrirConexion();
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.CommandText = procedure;
+                comando.Parameters.Clear();
+                comando.Parameters.AddWithValue("@IdSuscriptor", suscriptor.IdSuscriptor);
+                comando.ExecuteNonQuery();
+                leer = comando.ExecuteReader();
 
-                    if (leer.Read())
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                if (leer.Read())
+                {
+                    return true;
                 }
-                return false;
+                else
+                {
+                    return false;
+                }
 
             }
             catch (Exception)
@@ -148,28 +144,26 @@ namespace DAL
             Suscripcion suscripcion = new Suscripcion();
             try
             {
-                if (VerificarSuscripcion(suscriptor))
-                {
-                    string procedure = "sp_ActualizarSuscripcion";
-                    comando.Connection = conexion.AbrirConexion();
-                    comando.CommandType = CommandType.StoredProcedure;
-                    comando.CommandText = procedure;
-                    comando.Parameters.Clear();
-                    comando.Parameters.AddWithValue("@IdSuscriptor", suscriptor.IdSuscriptor);
-                    comando.ExecuteNonQuery();
+                string procedure = "sp_ActualizarSuscripcion";
+                comando.Connection = conexion.AbrirConexion();
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.CommandText = procedure;
+                comando.Parameters.Clear();
+                comando.Parameters.AddWithValue("@IdSuscriptor", suscriptor.IdSuscriptor);
+                comando.ExecuteNonQuery();
 
-                    return suscripcion;
-                }
-                else
-                {
-                    conexion.CerrarConexion();
-                    return null;
-                }
+                return suscripcion;
+
             }
             catch (Exception)
             {
 
                 throw;
+            }
+
+            finally
+            {
+                conexion.CerrarConexion();
             }
         }
 
